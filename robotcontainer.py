@@ -8,7 +8,7 @@ import typing
 
 from commands2 import cmd, InstantCommand, RunCommand
 from commands2.button import JoystickButton
-from wpilib import XboxController
+from wpilib import XboxController, PS4Controller
 from wpimath.controller import PIDController, ProfiledPIDControllerRadians, HolonomicDriveController
 from wpimath.geometry import Pose2d, Rotation2d, Translation2d
 from wpimath.trajectory import TrajectoryConfig, TrajectoryGenerator
@@ -30,7 +30,7 @@ class RobotContainer:
         # The robot's subsystems
         self.robotDrive = DriveSubsystem()
 
-        # The driver's controllerz
+        # The driver's controller
         self.driverController = wpilib.XboxController(OIConstants.kDriverControllerPort)
 
         # Configure the button bindings and autos
