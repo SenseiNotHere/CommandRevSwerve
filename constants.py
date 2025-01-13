@@ -28,9 +28,9 @@ class DriveConstants:
     kMaxSpeedMetersPerSecond = 4.8
     kMaxAngularSpeed = math.tau  # radians per second
 
-    kDirectionSlewRate = 1.2  # radians per second
-    kMagnitudeSlewRate = 1.8  # percent per second (1 = 100%)
-    kRotationalSlewRate = 2.0  # percent per second (1 = 100%)
+    kDirectionSlewRate = 0.8 #radians per second
+    kMagnitudeSlewRate = 1.0  # percent per second (1 = 100%)
+    kRotationalSlewRate = 1.0 # percent per second (1 = 100%)
 
     # Chassis configuration
     kTrackWidth = units.inchesToMeters(26.5)
@@ -68,6 +68,9 @@ class DriveConstants:
 
     kGyroReversed = -1  # can be +1 if not flipped (affects field-relative driving)
 
+class CANIDs:
+    kArmMotorRight = 8
+    kArmMotorLeft = 9
 
 class ModuleConstants:
     # The MAXSwerve module can be configured with one of three pinion gears: 12T, 13T, or 14T.
@@ -126,7 +129,7 @@ class ModuleConstants:
 
 class OIConstants:
     kDriverControllerPort = 0
-    kDriveDeadband = 0.05
+    kDriveDeadband = 0.1
 
 
 class AutoConstants:

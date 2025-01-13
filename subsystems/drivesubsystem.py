@@ -93,8 +93,7 @@ class DriveSubsystem(Subsystem):
 
     def periodic(self) -> None:
         # Update the odometry in the periodic block
-        pose = self.odometry.update(
-            self.getGyroHeading(),
+        pose = self.odometry.update(            self.getGyroHeading(),
             (
                 self.frontLeft.getPosition(),
                 self.frontRight.getPosition(),
@@ -172,6 +171,7 @@ class DriveSubsystem(Subsystem):
         :param rotSpeed: rotation speed
         """
         self.arcadeDrive(0, rotSpeed)
+
 
     def drive(
         self,
