@@ -87,80 +87,31 @@ class RobotContainer:
     def configureAutos(self):
         self.chosenAuto = wpilib.SendableChooser()
         # you can also set the default option, if needed
-        self.chosenAuto.setDefaultOption("trajectory example", self.getAutonomousTrajectoryExample)
-        self.chosenAuto.addOption("left blue", self.getAutonomousLeftBlue)
-        self.chosenAuto.addOption("left red", self.getAutonomousLeftRed)
+#        self.chosenAuto.setDefaultOption("trajectory example", self.getAutonomousTrajectoryExample)
+#        self.chosenAuto.addOption("left blue", self.getAutonomousLeftBlue)
+#        self.chosenAuto.addOption("left red", self.getAutonomousLeftRed)
+        self.chosenAuto.setDefaultOption("auto test", self.getAutoTest)
         wpilib.SmartDashboard.putData("Chosen Auto", self.chosenAuto)
 
-    def getAutonomousLeftBlue(self):
-        setStartPose = ResetXY(x=0.783, y=6.686, headingDegrees=+60, drivetrain=self.robotDrive)
-        driveForward = commands2.RunCommand(lambda: self.robotDrive.arcadeDrive(xSpeed=1.0, rot=0.0), self.robotDrive)
-        stop = commands2.InstantCommand(lambda: self.robotDrive.arcadeDrive(0, 0))
+    def getAutoTest(self):
+        setStartPose = ResetXY(x=8.795, y=3.013, headingDegrees=+50.000, drivetrain=self.robotDrive)
 
-        command = setStartPose.andThen(driveForward.withTimeout(1.0)).andThen(stop)
+        from commands.jerky_trajectory import JerkyTrajectory
+        goToFinish = JerkyTrajectory(
+            drivetrain=self.robotDrive,
+            endpoint=(14.270, 5.773, 0.682),
+            waypoints=[
+                (9.962, 4.638, 52.524),
+                (11.966, 5.905, -11.459)
+            ],
+            swerve=True,
+            speed=0.2)
+
+        from commands.aimtodirection import AimToDirection
+        aimDown = AimToDirection(degrees=90, drivetrain=self.robotDrive)
+
+        command = setStartPose.andThen(goToFinish).andThen(aimDown)
         return command
-
-    def getAutonomousLeftRed(self):
-        setStartPose = ResetXY(x=15.777, y=4.431, headingDegrees=-120, drivetrain=self.robotDrive)
-        driveForward = commands2.RunCommand(lambda: self.robotDrive.arcadeDrive(xSpeed=1.0, rot=0.0), self.robotDrive)
-        stop = commands2.InstantCommand(lambda: self.robotDrive.arcadeDrive(0, 0))
-
-        command = setStartPose.andThen(driveForward.withTimeout(2.0)).andThen(stop)
-        return command
-
-    def getAutonomousTrajectoryExample(self) -> commands2.Command:
-        # Create config for trajectory
-        config = TrajectoryConfig(
-            AutoConstants.kMaxSpeedMetersPerSecond,
-            AutoConstants.kMaxAccelerationMetersPerSecondSquared,
-        )
-        # Add kinematics to ensure max speed is actually obeyed
-        config.setKinematics(DriveConstants.kDriveKinematics)
-
-        # An example trajectory to follow. All units in meters.
-        exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-            # Start at the origin facing the +X direction
-            Pose2d(0, 0, Rotation2d(0)),
-            # Pass through these two interior waypoints, making an 's' curve path
-            [Translation2d(0.5, 0.5), Translation2d(1, -0.5)],
-            # End 1.5 meters straight ahead of where we started, facing forward
-            Pose2d(1.5, 0, Rotation2d(0)),
-            config,
-        )
-
-        thetaController = ProfiledPIDControllerRadians(
-            AutoConstants.kPThetaController,
-            0,
-            0,
-            AutoConstants.kThetaControllerConstraints,
-        )
-        thetaController.enableContinuousInput(-math.pi, math.pi)
-
-        driveController = HolonomicDriveController(
-            PIDController(AutoConstants.kPXController, 0, 0),
-            PIDController(AutoConstants.kPXController, 0, 0),
-            thetaController,
-        )
-
-        swerveControllerCommand = commands2.SwerveControllerCommand(
-            exampleTrajectory,
-            self.robotDrive.getPose,  # Functional interface to feed supplier
-            DriveConstants.kDriveKinematics,
-            driveController,
-            self.robotDrive.setModuleStates,
-            (self.robotDrive,),
-        )
-
-        # Reset odometry to the starting pose of the trajectory.
-        self.robotDrive.resetOdometry(exampleTrajectory.initialPose())
-
-        # Run path following command, then stop at the end.
-        return swerveControllerCommand.andThen(
-            cmd.run(
-                lambda: self.robotDrive.drive(0, 0, 0, False, False),
-                self.robotDrive,
-            )
-        )
 
     def getTestCommand(self) -> typing.Optional[commands2.Command]:
         """

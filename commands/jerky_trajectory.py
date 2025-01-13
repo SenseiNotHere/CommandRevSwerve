@@ -21,12 +21,12 @@ from wpimath.geometry import Pose2d, Rotation2d, Translation2d
 class JerkyTrajectory(commands2.Command):
     def __init__(
         self,
-        drivetrain: DriveSubsystem,
-        endpoint: Pose2d | Translation2d | tuple | list,
-        waypoints: typing.List[Pose2d | Translation2d | tuple | list] = (),
-        swerve: bool = False,
-        speed=1.0,
-    ):
+            drivetrain: DriveSubsystem,
+            endpoint: Pose2d | Translation2d | tuple | list,
+            waypoints: typing.List[Pose2d | Translation2d | tuple | list] = (),
+            swerve: bool = False,
+            speed: object = 1.0,
+    ) -> object:
         """
         :param swerve: do we want to use the swerve functionality (otherwise it will arcade drive)
         :param drivetrain: drive train

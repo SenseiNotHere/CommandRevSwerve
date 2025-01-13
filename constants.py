@@ -50,9 +50,9 @@ class DriveConstants:
     kAssumeZeroOffsets = False
 
     # set the above to == False, if you are using Rev zeroing tool (and you have to tinker with offsets below)
-    kFrontLeftChassisAngularOffset = 0
+    kFrontLeftChassisAngularOffset = 135
     kFrontRightChassisAngularOffset = 0
-    kBackLeftChassisAngularOffset = 0
+    kBackLeftChassisAngularOffset = 135
     kBackRightChassisAngularOffset = 0
 
     # SPARK MAX CAN IDs
@@ -77,7 +77,7 @@ class ModuleConstants:
 
     # Invert the turning encoder, since the output shaft rotates in the opposite direction of
     # the steering motor in the MAXSwerve Module.
-    kTurningEncoderInverted = True
+    kTurningEncoderInverted = False
 
     # Calculations required for driving motor conversion factors and feed forward
     kDrivingMotorFreeSpeedRps = NeoMotorConstants.kFreeSpeedRpm / 60
