@@ -19,6 +19,7 @@ class GoToPointConstants:
     kMinTranslateSpeed = 0.07  # moving forward slower than this is unproductive
     kApproachRadius = 0.2  # within this radius from target location, try to point in desired direction
     kOversteerAdjustment = 0.5
+    kUseSqrtControl = 0.1
 
 
 class GoToPoint(commands2.Command):

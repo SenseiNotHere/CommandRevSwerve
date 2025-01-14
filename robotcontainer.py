@@ -14,6 +14,7 @@ from wpimath.controller import PIDController, ProfiledPIDControllerRadians, Holo
 from wpimath.geometry import Pose2d, Rotation2d, Translation2d
 from wpimath.trajectory import TrajectoryConfig, TrajectoryGenerator
 
+from commands.aimtodirection import AimToDirection
 from constants import AutoConstants, DriveConstants, OIConstants
 from subsystems.drivesubsystem import DriveSubsystem
 
@@ -113,6 +114,8 @@ class RobotContainer:
         wpilib.SmartDashboard.putData("Chosen Auto", self.chosenAuto)
 
     def getFollowObject(self):
+        setStartPose = ResetXY(x=8.795, y=3.013, headingDegrees=+50.000, drivetrain=self.robotDrive)
+
         findTag = FindObject(
             camera= LimelightCamera("limelight"),
             drivetrain= self.robotDrive,
@@ -125,19 +128,19 @@ class RobotContainer:
             drivetrain= self.robotDrive,
             speed= 0.2,
             reverse= False,
-            pushForwardSeconds= 0.0,
+            pushForwardSeconds= 1.0,
             pushForwardSpeed= 0.2,
         )
         followTag = FollowObject(
             camera= LimelightCamera("limelight"),
             drivetrain= self.robotDrive,
-            stepSeconds= 0.33,
-            stopWhen= 1,
+            stepSeconds= 0.2,
+            stopWhen= 10,
             smoothness=1.0,
             speed= 0.2
         )
 
-        command = findTag.andThen(alignTag).andThen(followTag)
+        command = setStartPose.andThen(findTag).andThen(alignTag).andThen(followTag)
         return command
 
     def getAutoTest(self):

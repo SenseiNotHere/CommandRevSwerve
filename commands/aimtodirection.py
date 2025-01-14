@@ -17,7 +17,7 @@ class AimToDirectionConstants:
     kMinTurnSpeed = 0.05  # turning slower than this is unproductive for the motor (might not even spin)
     kAngleToleranceDegrees = 2.0  # plus minus 2 degrees is "close enough"
     kAngleVelocityToleranceDegreesPerSec = 50  # velocity under 100 degrees/second is considered "stopped"
-
+    kUseSqrtControl = 0.1
 
 class AimToDirection(commands2.Command):
     def __init__(self, degrees: float | typing.Callable[[], float], drivetrain: DriveSubsystem, speed=1.0, fwd_speed=0.0):
